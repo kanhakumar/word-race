@@ -1,43 +1,8 @@
-import { Button, TextField } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 
 const useStyles = (theme) => ({
-  preview: {
-    right: theme.spacing(-21),
-    backgroundColor: "#3667d6",
-    color: "#d4ddf0",
-    boxShadow: "0 8px 25px -8px #7367f0",
-    paddingLeft: theme.spacing(3),
-    paddingRight: theme.spacing(3),
-    "&:hover": {
-      backgroundColor: "#d4ddf0",
-      color: "#3667d6",
-    },
-  },
-  root: {
-    width: 440,
-    paddingLeft: theme.spacing(2),
-    paddingTop: theme.spacing(2),
-  },
-  submit: {
-    right: theme.spacing(-44),
-    paddingLeft: theme.spacing(3),
-    paddingRight: theme.spacing(3),
-    color: "#d3ebdb",
-    boxShadow: "0 8px 25px -8px #7367f0",
-    "&:hover": {
-      backgroundColor: "#ffffff",
-      color: "#3f51b5",
-    },
-  },
-  inputtext: {
-    width: theme.spacing(53.5),
-    marginLeft: theme.spacing(1.5),
-    marginBottom: theme.spacing(3.5),
-    marginTop: theme.spacing(-3),
-    height: theme.spacing(5),
-  },
   header: {
     backgroundColor: "#f5f5f5",
     marginBottom: "0px",
@@ -48,13 +13,6 @@ const useStyles = (theme) => ({
     fontweight: "bold",
     borderBottomLeftRadius: "0px",
     borderBottomRightRadius: "0px",
-  },
-  footer: {
-    backgroundColor: "#e9e7e7",
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
-    borderRadius: "5px",
-    marginTop: theme.spacing(1.3),
   },
   closebutton: {
     right: theme.spacing(-53),
@@ -79,19 +37,11 @@ const useStyles = (theme) => ({
       color: "#d3ebdb",
     },
   },
-  form: {
-    width: "90%",
-  },
-  input: {
-    marginLeft: "20px",
-  },
-  submitBtn: {
-    "&:hover": {
-      backgroundColor: "#ffffff",
-      color: "#3f51b5",
-    },
-    marginLeft: "20px",
-    marginBottom: "10px",
+  content: {
+    marginLeft: "1.2em",
+    marginRight: "1em",
+    marginTop: "-2.4em",
+    fontFamily: "cursive",
   },
 });
 
@@ -106,33 +56,31 @@ class InstructionComponent extends Component {
 
     return (
       <>
-        <div className={classes.header}>
-          <p>header</p>
-        </div>
-        <div>
-          <form className={classes.form} noValidate>
-            <TextField
-              className={classes.input}
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submitBtn}
-            >
-              Sign In
-            </Button>
-          </form>
+        <div className={classes.header}>How to play!</div>
+        <Button className={classes.closebutton} onClick={this.handleClose}>
+          X
+        </Button>
+        <div className={classes.content}>
+          <p>
+            Word Race is a game designed to improve QWERTY typing rate and
+            efficiency. Words appear one by one at a rate that goes up as time
+            progresses. There’s a limited “stack space” that fills up after a
+            certain amount of words have appeared. Once a player types a word
+            correctly, that word is removed from the stack.{" "}
+          </p>
+          <p>
+            The score is calculated based on how fast the player was able to
+            clear that word, and a multiplier. The multiplier increases with
+            every word the player types correctly and resets on any mistype.
+            Optionally a leveling system can also be added that varies the word
+            appearing rate, the stack space and leveling up bonus score, else
+            the rate can go up constantly, flattening out at say one word per
+            two seconds.
+          </p>
+          <p>
+            If the stack is full, it’s game over. The player can then submit
+            their score and compare with a leaderboard.
+          </p>
         </div>
       </>
     );

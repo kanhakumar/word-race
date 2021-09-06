@@ -1,4 +1,5 @@
 import Button from "@material-ui/core/Button";
+import SignInComponent from "./SignInComponent";
 
 const Home = () => {
   return (
@@ -13,34 +14,26 @@ const Home = () => {
       <div className="bottom-container">
         <div className="description-div">
           <p>
-            Word Race is a game designed to improve QWERTY typing rate and
-            efficiency. Words appear one by one at a rate that goes up as time
-            progresses. There’s a limited “stack space” that fills up after a
-            certain amount of words have appeared. Once a player types a word
-            correctly, that word is removed from the stack.{" "}
+            WordRace is a game designed to improve QWERTY typing rate and
+            efficiency. Words will apprear one by one in a stck at a rate that
+            goes up as time progresses. Stack space is limited and you have to
+            clear it before it is filled.
           </p>
           <p>
-            The score is calculated based on how fast the player was able to
-            clear that word, and a multiplier. The multiplier increases with
-            every word the player types correctly and resets on any mistype.
-            Optionally a leveling system can also be added that varies the word
-            appearing rate, the stack space and leveling up bonus score, else
-            the rate can go up constantly, flattening out at say one word per
-            two seconds.
+            The faster you clear word from stack, the higher will be your score.
+            If the stack is full, it's game over. Ofcourse you can try again.
+            Don't worry on that.
           </p>
           <p>
-            If the stack is full, it’s game over. The player can then submit
-            their score and compare with a leaderboard.
+            So, wanna try ho fast your finger falls down on right keys? Click on
+            the button on your right to jump in.
           </p>
         </div>
-        <div className="button-div">
-          <Button
-            variant="contained"
-            color="primary"
-            style={{ margin: "auto" }}
-          >
+        <div className="login-div">
+          <SignInComponent />
+          {/* <Button className="go-btn" variant="contained" color="primary">
             Lets's go!
-          </Button>
+          </Button> */}
         </div>
       </div>
     </>

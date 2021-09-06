@@ -2,10 +2,13 @@ import Button from "@material-ui/core/Button";
 import { useState } from "react";
 import CircularStatic from "./ProgressComponent";
 import { Backdrop, Fade, Modal } from "@material-ui/core";
-import SignInComponent from "./SignInComponent";
+import InstructionComponent from "./InstructionComponent";
+import HelpIcon from "@material-ui/icons/Help";
+import KeyBoardComponent from "./KeyBoardComponent";
+import StackComponent from "./StackComponent";
 
 const Game = () => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   const handleClose = (event) => {
     setOpen((prevValue) => !prevValue);
@@ -29,15 +32,25 @@ const Game = () => {
           >
             Leaderboard
           </Button>
+          <Button
+            style={{ width: "50px", height: "50px", borderRadius: "50%" }}
+            onClick={handleClose}
+          >
+            <HelpIcon style={{ margin: "0" }} />
+          </Button>
         </div>
-        <div className="wordstack">playground</div>
+        <div className="wordstack">
+          <StackComponent />
+        </div>
         <div className="score-details">
           <CircularStatic />
           <CircularStatic />
           <CircularStatic />
         </div>
       </div>
-      <div className="keyboard-container">keyboard</div>
+      <div className="keyboard-container">
+        <KeyBoardComponent />
+      </div>
       <Modal
         className="modal"
         open={open}
@@ -51,7 +64,7 @@ const Game = () => {
       >
         <Fade in={open}>
           <div className="paper">
-            <SignInComponent handleClose={handleClose} />
+            <InstructionComponent handleClose={handleClose} />
           </div>
         </Fade>
       </Modal>
