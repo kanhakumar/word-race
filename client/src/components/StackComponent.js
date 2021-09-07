@@ -1,25 +1,22 @@
-const words = ["KANHA", "RAJ", "AYUSH", "NIRMAL", "KIRAN", "PADMA"];
+import { useEffect } from "react";
 
-const StackComponent = () => {
+const StackComponent = (props) => {
+  useEffect(() => {
+    console.log(props.stackedWords.length);
+    if (props.stackedWords.length === 7) {
+      console.log("bhejega?");
+      props.endGame();
+    }
+  }, [props.stackedWords]);
   return (
-    <div>
-      {words.map((word) => {
+    <div className="stack-container">
+      {props.stackedWords.map((word) => {
         return (
-          <div>
-            <p>{word}</p>
+          <div className="word-container">
+            <p className="words">{word.word}</p>
           </div>
         );
       })}
-      {/* {words.map((word, index) => {
-        setTimeout(() => {
-          return (
-            <div>
-              <p>{word}</p>
-            </div>
-          );
-          //   console.log(word);
-        }, 1000 * index);
-      })} */}
     </div>
   );
 };

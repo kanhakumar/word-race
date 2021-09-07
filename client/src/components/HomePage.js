@@ -1,4 +1,3 @@
-import Button from "@material-ui/core/Button";
 import SignInComponent from "./SignInComponent";
 
 const Home = () => {

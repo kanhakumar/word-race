@@ -1,34 +1,17 @@
 import React, { useState } from "react";
-import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+import axios from "axios";
+
+const Api = "http://localhost:4000/api/";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: "2em",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -49,18 +32,46 @@ const useStyles = makeStyles((theme) => ({
 export default function SignInComponent() {
   const classes = useStyles();
   const [isUser, setIsUser] = useState(false);
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
 
-  const validateUser = () => {
+  const postUser = () => {
     setIsUser(true);
+    document.getElementById("btn").innerHTML = "Go!";
+  };
+
+  const handleSubmit = async () => {
+    if (!isUser) {
+      // checkuser api call
+      const response = await axios.post(Api + "/user/getUser", {
+        email,
+      });
+      console.log(response);
+      // if user is there proceed
+      if (response.data.success === true) {
+        window.location = "http://localhost:3000/game";
+      }
+      // else postUser
+      else {
+        postUser();
+      }
+    } else {
+      // post request with data.
+      const res = await axios.post(Api + "/user/addUser", {
+        email,
+        name,
+      });
+      console.log(res);
+      if (res.data.success === true) {
+        window.location = "http://localhost:3000/game";
+      }
+    }
   };
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        {/* <Typography component="h1" variant="h5">
-          Sign in
-        </Typography> */}
         <form className={classes.form} noValidate>
           <TextField
             variant="outlined"
@@ -72,6 +83,7 @@ export default function SignInComponent() {
             name="email"
             autoComplete="email"
             autoFocus
+            onChange={(e) => setEmail(e.target.value)}
           />
           {isUser && (
             <TextField
@@ -79,26 +91,25 @@ export default function SignInComponent() {
               margin="normal"
               required
               fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
+              name="name"
+              label="Name"
+              type="text"
+              id="name"
+              autoComplete="name"
+              onChange={(e) => setName(e.target.value)}
             />
           )}
-          {/* <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          /> */}
           <Button
+            style={{ fontFamily: "cursive" }}
+            id="btn"
             type="button"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={validateUser}
+            onClick={handleSubmit}
           >
-            Sign In
+            Enter!
           </Button>
         </form>
       </div>

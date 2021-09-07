@@ -30,7 +30,7 @@
   margin-left: 1em;
   margin-right: 1em;
   font-family: "Brush Script MT", cursive;
-  margin-top: 3em;
+  margin-top: 3.4em !important;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -42,7 +42,6 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-bottom: 20px;
 }
 
 .go-btn {
@@ -55,24 +54,25 @@
 
 .playground-container {
   display: flex;
+  flex-direction: column;
   justify-content: space-evenly;
   height: 60vh;
 }
 
 .controlls {
-  width: 20vw;
-  background-color: cadetblue;
+  height: 20vh;
+  width: 100vw;
   display: flex;
-  flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
 }
 
 .wordstack {
-  width: 60vw;
-  border-left: 2px solid rgb(109, 51, 47);
-  border-bottom: 2px solid rgb(109, 51, 47);
-  border-right: 2px solid rgb(109, 51, 47);
+  height: 40vh;
+  background-color: rgb(214, 211, 211);
+  margin: 20px;
+  border-radius: 4px;
+  box-shadow: 2px 2px 2px gray;
 }
 
 .score-details {
@@ -86,7 +86,7 @@
 .keyboard-container {
   width: 100vw;
   height: 40vh;
-  background-color: darkgoldenrod;
+  background-color: #ffffff;
 }
 
 .back-button {
@@ -120,14 +120,14 @@
   display: inline-flex;
   width: 70px;
   height: 70px;
-  background-color: white;
+  background-color: #dddddd;
   align-items: center;
   justify-content: center;
   font-size: xx-large;
   margin-top: 12px;
   margin-right: 6px;
   margin-left: 6px;
-  box-shadow: 2px 2px black;
+  box-shadow: 2px 2px grey;
   border-radius: 6px;
 }
 
@@ -135,5 +135,31 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  /* padding: 4px; */
+}
+
+.stack-container {
+  display: flex;
+}
+
+.word-container {
+  border: 2px solid black;
+}
+
+.level-box {
+  background-color: #63a0ef;
+  border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 120px;
+  height: 60px;
+}
+
+.level-text {
+  height: auto;
+  margin: 0;
+  font-family: cursive;
+  color: #fff;
+  font-size: 20px;
 }

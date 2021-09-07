@@ -8,14 +8,14 @@ const KeyBoardComponent = () => {
   const handleKeyDown = (e) => {
     let obj = document.getElementById(e.key.toUpperCase());
     if (obj) {
-      obj.style.backgroundColor = "#50690d";
+      obj.style.backgroundColor = "#63a0ef";
       obj.style.color = "white";
     }
   };
   const handleKeyUp = (e) => {
     let obj = document.getElementById(e.key.toUpperCase());
     if (obj) {
-      obj.style.backgroundColor = "white";
+      obj.style.backgroundColor = "#ddd";
       obj.style.color = "black";
     }
   };
