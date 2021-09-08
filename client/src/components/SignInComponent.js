@@ -4,10 +4,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-
-import axios from "axios";
-
-const Api = "http://localhost:4000/api/";
+import { signIn, signUp } from "../utils";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -21,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: "100%", // Fix IE 11 issue.
+    width: "100%",
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -29,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignInComponent() {
+function SignInComponent() {
   const classes = useStyles();
   const [isUser, setIsUser] = useState(false);
   const [email, setEmail] = useState("");
@@ -42,28 +39,16 @@ export default function SignInComponent() {
 
   const handleSubmit = async () => {
     if (!isUser) {
-      // checkuser api call
-      const response = await axios.post(Api + "/user/getUser", {
-        email,
-      });
-      console.log(response);
-      // if user is there proceed
-      if (response.data.success === true) {
-        window.location = "http://localhost:3000/game";
-      }
-      // else postUser
-      else {
+      const response = await signIn(email);
+      if (response.data.success) {
+        window.location = "/game";
+      } else {
         postUser();
       }
     } else {
-      // post request with data.
-      const res = await axios.post(Api + "/user/addUser", {
-        email,
-        name,
-      });
-      console.log(res);
-      if (res.data.success === true) {
-        window.location = "http://localhost:3000/game";
+      const res = await signUp(email, name);
+      if (res.data.success) {
+        window.location = "/game";
       }
     }
   };
@@ -116,3 +101,5 @@ export default function SignInComponent() {
     </Container>
   );
 }
+
+export default SignInComponent;

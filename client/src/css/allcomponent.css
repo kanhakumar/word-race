@@ -63,7 +63,7 @@
   height: 20vh;
   width: 100vw;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
 }
 
@@ -139,10 +139,26 @@
 
 .stack-container {
   display: flex;
+  justify-content: center;
+  padding-top: 10vh;
 }
 
 .word-container {
   border: 2px solid black;
+  display: inline-flex;
+  width: auto;
+  height: 70px;
+  background-color: #dddddd;
+  align-items: center;
+  justify-content: center;
+  font-size: xx-large;
+  margin-top: 12px;
+  margin-right: 6px;
+  margin-left: 6px;
+  box-shadow: 2px 2px grey;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
 .level-box {
@@ -154,6 +170,8 @@
   align-items: center;
   width: 120px;
   height: 60px;
+  margin-left: 40px;
+  margin-right: 40px;
 }
 
 .level-text {
@@ -162,4 +180,66 @@
   font-family: cursive;
   color: #fff;
   font-size: 20px;
+}
+
+.score-box {
+  background-color: rgb(117, 156, 59);
+  width: 100px;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  margin-left: 40px;
+  margin-right: 40px;
+  border-radius: 50%;
+}
+
+.multiplier-box {
+  background-color: rgb(102, 61, 148);
+  margin-left: 40px;
+  margin-right: 40px;
+  width: 100px;
+  height: 60px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.instruction-btn {
+  top: 85vh;
+  border-radius: 50%;
+}
+
+.details-display-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.details-display {
+  line-height: 60px;
+  letter-spacing: 2px;
+  width: 80%;
+  text-align: center;
+  font-size: 32px;
+  margin-bottom: 24px;
+}
+
+.save-score-btn {
+  width: 160px;
+  height: 50px;
+  background-color: rgb(24, 155, 90);
+  border-radius: 4px;
+  margin-bottom: 40px;
+  font-size: 22px;
+  color: #fff;
+}
+
+.save-score-btn:hover {
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+    rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
+    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }

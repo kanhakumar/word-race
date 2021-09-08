@@ -5,7 +5,7 @@ const { User } = require("../../models/User");
 module.exports = {
   savedGames: async (req, res) => {
     try {
-      const savedGames = await SavedGames.find().sort("user_id");
+      const savedGames = await SavedGames.find().sort({ score });
       if (savedGames.length !== 0) {
         return res.send({ success: true, savedGames });
       } else {
@@ -28,6 +28,23 @@ module.exports = {
       var game = new SavedGames(body);
       var savedGame = await game.save();
       res.send({ success: true, savedGame });
+    } catch (e) {
+      res.send({ success: false, message: e });
+    }
+  },
+  fetchLeaderBoard: async (req, res) => {
+    try {
+      var leaderboard = await SavedGames.aggregate([
+        {
+          $lookup: {
+            from: "users",
+            localField: "user_id",
+            foreignField: "_id",
+            as: "leaderboard",
+          },
+        },
+      ]);
+      res.send({ success: true, leaderboard });
     } catch (e) {
       res.send({ success: false, message: e });
     }

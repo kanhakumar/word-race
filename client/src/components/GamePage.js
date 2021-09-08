@@ -6,6 +6,8 @@ import InstructionComponent from "./InstructionComponent";
 import HelpIcon from "@material-ui/icons/Help";
 import KeyBoardComponent from "./KeyBoardComponent";
 import StackComponent from "./StackComponent";
+import GameOverComponent from "./GameOverComponent";
+import { updateUserData } from "../utils";
 
 const words = [
   { word: "KANHA", checked: "no" },
@@ -16,20 +18,19 @@ const words = [
   { word: "PADMA", checked: "no" },
 ];
 
-const Game = () => {
+const GamePage = () => {
   const [open, setOpen] = useState(false);
   const [end, setEnd] = useState(false);
   const [start, setStart] = useState(false);
-  const [time, setTime] = useState(3000);
+  const [time, setTime] = useState(2000);
   const [stackedWords, setStackedWords] = useState([]);
   const [activeWord, setActiveWord] = useState("");
   const [activeId, setActiveId] = useState(0);
   const [currentInput, setCurrentInput] = useState("");
-  // const [wordCounter, setWordCounter] = useState(0);
-  const stack = [];
-  const level = 3;
-  var tempWord = "";
-  let wordCounter = 0;
+  const [score, setScore] = useState(0);
+  const [multiplier, setMultiplier] = useState(1);
+  const [level, setLevel] = useState(1);
+  const [wordPointPerLevel, setWordPointPerLevel] = useState(1);
   const interval = useRef({});
 
   useEffect(() => {
@@ -40,14 +41,46 @@ const Game = () => {
     setOpen((prevValue) => !prevValue);
   };
 
+  const closeGameOverModal = () => {
+    setEnd((prevValue) => !prevValue);
+    setStackedWords([]);
+    setStart(false);
+    setScore(0);
+    setLevel(1);
+    setMultiplier(1);
+  };
+
   const endGame = () => {
     setEnd((prevValue) => !prevValue);
-    console.log(end, "end");
+    updateUserData(score, level);
   };
+
+  const increaseWordScorePerLevel = () => {
+    setWordPointPerLevel(10 * level);
+  };
+
+  const increaseScore = () => {
+    setScore((prevValue) => prevValue + wordPointPerLevel);
+    setMultiplier((prevValue) => prevValue + 1);
+    // handleWordApperingRate();
+  };
+
+  const increaseLevel = () => {
+    if (score >= 30 * level) {
+      setLevel((prevValue) => prevValue + 1);
+    }
+  };
+
+  const proceedToLeaderBoard = () => {
+    window.location = "/leaderboard";
+  };
+
+  // const handleWordApperingRate = () => {
+  //   setTime(level * multiplier);
+  // };
 
   const removeStackedWords = (...args) => {
     const id = args;
-    stack.push(activeId);
     setStackedWords((prevState) => {
       let index = _.findIndex(prevState, { id });
       let newItems = _.cloneDeep(prevState);
@@ -60,20 +93,23 @@ const Game = () => {
     const key = e.key.toUpperCase();
     if (key.match(/[A-Z]/i)) {
       const newInput = currentInput + key;
-      console.log(newInput, "ni");
       if (activeWord.indexOf(newInput) === 0) {
         if (activeWord === newInput) {
           removeStackedWords(activeId);
+          increaseScore();
+          increaseLevel();
         }
         setCurrentInput(newInput);
       } else {
         setCurrentInput("");
+        setMultiplier(1);
       }
     }
   };
 
-  const handleGame = () => {
+  const startGame = () => {
     interval.current.id = setInterval(() => {
+      increaseWordScorePerLevel();
       let rng = Math.floor(Math.random() * words.length);
       let idObj = { id: Date.now() };
       let wordObj = Object.assign(words[rng], idObj);
@@ -82,13 +118,7 @@ const Game = () => {
       setActiveId(wordObj.id);
       setCurrentInput("");
     }, time);
-    if (!start) {
-      setStart(true);
-      document.getElementById("start-btn").innerHTML = "END";
-    } else {
-      setStart(false);
-      document.getElementById("start-btn").innerHTML = "START";
-    }
+    setStart(true);
   };
 
   return (
@@ -105,26 +135,32 @@ const Game = () => {
             variant="contained"
             color="primary"
             style={{ margin: "auto" }}
-            onClick={handleGame}
+            onClick={startGame}
           >
             Start
           </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            style={{ margin: "auto" }}
-          >
-            Leaderboard
-          </Button>
+
           <div className="level-box">
             <p className="level-text">{level}</p>
             <p className="level-text">Level</p>
           </div>
+          <div className="score-box">
+            <p className="level-text">{score}</p>
+            <p className="level-text">Score</p>
+          </div>
+          <div className="multiplier-box">
+            <p className="level-text">{multiplier}X</p>
+          </div>
           <Button
-            style={{ width: "50px", height: "50px", borderRadius: "50px" }}
-            onClick={handleClose}
+            variant="contained"
+            color="primary"
+            style={{ margin: "auto" }}
+            onClick={proceedToLeaderBoard}
           >
-            <HelpIcon style={{ margin: "0" }} />
+            Leaderboard
+          </Button>
+          <Button className="instruction-btn" onClick={handleClose}>
+            <HelpIcon style={{ margin: "0", transform: "scale(1.2, 1.2)" }} />
           </Button>
         </div>
         <div className="wordstack">
@@ -151,8 +187,30 @@ const Game = () => {
           </div>
         </Fade>
       </Modal>
+      <Modal
+        className="modal"
+        open={end}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+        disableBackdropClick
+      >
+        <Fade in={end}>
+          <div className="paper">
+            <GameOverComponent
+              closeGameOverModal={closeGameOverModal}
+              score={score}
+              level={level}
+              multiplier={multiplier}
+            />
+          </div>
+        </Fade>
+      </Modal>
     </div>
   );
 };
 
-export default Game;
+export default GamePage;

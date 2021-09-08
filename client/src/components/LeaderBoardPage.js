@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -8,10 +8,11 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { Button } from "@material-ui/core";
+import { fetchLeaderBoardData } from "../utils";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
-    backgroundColor: "rgb(109, 51, 47)",
+    backgroundColor: "#184a36",
     color: theme.palette.common.white,
   },
   body: {
@@ -27,23 +28,6 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-function createData(rank, score, games, avgScore, maxLevel) {
-  return { rank, score, games, avgScore, maxLevel };
-}
-
-const rows = [
-  createData(1, 1000, 159, 6.0, 24),
-  createData(2, 995, 237, 9.0, 37),
-  createData(3, 990, 262, 16.0, 24),
-  createData(4, 900, 305, 3.7, 67),
-  createData(5, 860, 356, 16.0, 49),
-  createData(6, 860, 356, 16.0, 49),
-  createData(7, 860, 356, 16.0, 49),
-  createData(8, 860, 356, 16.0, 49),
-  createData(9, 860, 356, 16.0, 49),
-  createData(10, 860, 356, 16.0, 49),
-];
-
 const useStyles = makeStyles({
   table: {
     minWidth: 700,
@@ -52,6 +36,24 @@ const useStyles = makeStyles({
 
 export default function LeaderBoardPage() {
   const classes = useStyles();
+
+  const [leaderBoardData, setLeaderBoardData] = useState([]);
+
+  const populateLeaderBoard = async () => {
+    let leaderboard = await fetchLeaderBoardData();
+    if (leaderboard.length > 10) {
+      leaderboard.splice(10);
+    }
+    setLeaderBoardData(leaderboard);
+  };
+
+  useEffect(() => {
+    populateLeaderBoard();
+  }, []);
+
+  const backToGamePage = () => {
+    window.location = "/game";
+  };
 
   return (
     <>
@@ -69,15 +71,21 @@ export default function LeaderBoardPage() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <StyledTableRow key={row.rank}>
+            {leaderBoardData.map((row, index) => (
+              <StyledTableRow key={row._id}>
                 <StyledTableCell component="th" scope="row">
-                  {row.rank}
+                  {index + 1}
                 </StyledTableCell>
                 <StyledTableCell align="center">{row.score}</StyledTableCell>
-                <StyledTableCell align="center">{row.games}</StyledTableCell>
-                <StyledTableCell align="center">{row.avgScore}</StyledTableCell>
-                <StyledTableCell align="center">{row.maxLevel}</StyledTableCell>
+                <StyledTableCell align="center">
+                  {row.leaderboard[0].gamesPlayed}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {row.leaderboard[0].averageScore.toFixed(2)}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {row.leaderboard[0].maxLevel}
+                </StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>
@@ -88,6 +96,7 @@ export default function LeaderBoardPage() {
           variant="contained"
           color="primary"
           style={{ marginTop: "1.2em", marginBottom: "1.2em" }}
+          onClick={backToGamePage}
         >
           Get back to game
         </Button>
