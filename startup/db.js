@@ -14,5 +14,8 @@ module.exports = function () {
     })
     .then(() => {
       console.log("Connected to DataBase...");
+    })
+    .catch((e) => {
+      console.log("Unable to connect to DataBase");
     });
 };

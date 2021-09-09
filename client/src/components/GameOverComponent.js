@@ -46,6 +46,7 @@ const useStyles = (theme) => ({
   },
 });
 
+//This is the modal component that opens when game ends.
 class GameOverComponent extends Component {
   constructor(props) {
     super(props);
@@ -53,11 +54,19 @@ class GameOverComponent extends Component {
     this.score = props.score;
     this.level = props.level;
     this.saveGameToServer = this.saveGameToServer.bind(this);
+    this.proceedToLeaderBoard = this.proceedToLeaderBoard.bind(this);
   }
 
+  //function is called to send data to server to store
   saveGameToServer = () => {
+    //this is the helper function from util which calls the API endpoint '/game/saveGame'
     saveGame(this.props.score, this.props.level, this.props.multiplier);
     this.closeGameOverModal();
+  };
+
+  //to go to leaderboard page
+  proceedToLeaderBoard = () => {
+    window.location = "/leaderboard";
   };
 
   render() {
@@ -78,13 +87,20 @@ class GameOverComponent extends Component {
             <div>Level:{this.props.level}</div>
             <div>Multiplier:{this.props.multiplier}</div>
           </div>
-          <div>
+          <div className="gameover-footer">
             <button
               id="save-score"
               className="save-score-btn"
               onClick={this.saveGameToServer}
             >
               Save Score
+            </button>
+            <button
+              id="save-score"
+              className="save-score-btn"
+              onClick={this.proceedToLeaderBoard}
+            >
+              LeaderBoard
             </button>
           </div>
         </div>

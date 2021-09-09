@@ -7,7 +7,7 @@ module.exports = {
     try {
       const savedGames = await SavedGames.find().sort({ score });
       if (savedGames.length !== 0) {
-        return res.send({ success: true, savedGames });
+        return res.staus(200).send({ success: true, savedGames });
       } else {
         return res.send({
           success: false,
@@ -15,7 +15,7 @@ module.exports = {
         });
       }
     } catch (e) {
-      res.send({ success: false, message: e });
+      res.status(500).send({ success: false, message: e });
     }
   },
   saveGame: async (req, res) => {
@@ -27,9 +27,9 @@ module.exports = {
       }
       var game = new SavedGames(body);
       var savedGame = await game.save();
-      res.send({ success: true, savedGame });
+      res.status(200).send({ success: true, savedGame });
     } catch (e) {
-      res.send({ success: false, message: e });
+      res.status(500).send({ success: false, message: e });
     }
   },
   fetchLeaderBoard: async (req, res) => {
@@ -43,10 +43,12 @@ module.exports = {
             as: "leaderboard",
           },
         },
+        { $sort: { score: -1 } },
+        { $limit: 10 },
       ]);
-      res.send({ success: true, leaderboard });
+      res.status(200).send({ success: true, leaderboard });
     } catch (e) {
-      res.send({ success: false, message: e });
+      res.status(500).send({ success: false, message: e });
     }
   },
 };

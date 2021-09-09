@@ -8,9 +8,9 @@ module.exports = {
       if (!user) {
         throw "User doesn't exist";
       }
-      res.send({ success: true, user });
+      res.status(200).send({ success: true, user });
     } catch (e) {
-      res.send({ success: false, message: e });
+      res.status(500).send({ success: false, message: e });
     }
   },
   addUser: async (req, res) => {
@@ -22,9 +22,9 @@ module.exports = {
       var body = _.pick(req.body, ["name", "email"]);
       var user = new User(body);
       var addedUser = await user.save();
-      res.send({ success: true, addedUser });
+      res.status(200).send({ success: true, addedUser });
     } catch (e) {
-      res.send({ success: false, message: e });
+      res.status(500).send({ success: false, message: e });
     }
   },
   updateUserData: async (req, res) => {
@@ -50,9 +50,9 @@ module.exports = {
         },
         { new: true }
       );
-      return res.send({ success: true, updatedUser });
+      return res.status(200).send({ success: true, updatedUser });
     } catch (e) {
-      res.send({ success: false, message: e });
+      res.status(500).send({ success: false, message: e });
     }
   },
 };

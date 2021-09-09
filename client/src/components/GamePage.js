@@ -1,27 +1,40 @@
 import _ from "lodash";
-import Button from "@material-ui/core/Button";
 import { useState, useRef, useEffect } from "react";
 import { Backdrop, Fade, Modal } from "@material-ui/core";
 import InstructionComponent from "./InstructionComponent";
-import HelpIcon from "@material-ui/icons/Help";
 import KeyBoardComponent from "./KeyBoardComponent";
 import StackComponent from "./StackComponent";
 import GameOverComponent from "./GameOverComponent";
-import { updateUserData } from "../utils";
+import { failureSound, successSound, updateUserData } from "../utils";
 
 const words = [
-  { word: "KANHA", checked: "no" },
-  { word: "RAJ", checked: "no" },
-  { word: "AYUSH", checked: "no" },
-  { word: "NIRMAL", checked: "no" },
-  { word: "KIRAN", checked: "no" },
-  { word: "PADMA", checked: "no" },
+  { word: "cleannesses" },
+  { word: "deceivable" },
+  { word: "enfeebled" },
+  { word: "circumstantial" },
+  { word: "clank" },
+  { word: "rearousing" },
+  { word: "tomcats" },
+  { word: "harmfulness" },
+  { word: "unicolor" },
+  { word: "multimode" },
+  { word: "moundbirds" },
+  { word: "toilsome" },
+  { word: "exchanged" },
+  { word: "cattle" },
+  { word: "epigrapher" },
+  { word: "untitled" },
+  { word: "curricles" },
+  { word: "unicolor" },
+  { word: "reactions" },
+  { word: "wildlings" },
+  { word: "tacklings" },
 ];
 
+//This is the main component that renders the game
 const GamePage = () => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const [end, setEnd] = useState(false);
-  const [start, setStart] = useState(false);
   const [time, setTime] = useState(2000);
   const [stackedWords, setStackedWords] = useState([]);
   const [activeWord, setActiveWord] = useState("");
@@ -37,48 +50,51 @@ const GamePage = () => {
     clearInterval(interval.current.id);
   }, [end]);
 
-  const handleClose = () => {
-    setOpen((prevValue) => !prevValue);
-  };
-
+  //this function is called to close the gameover modal and it is also
+  //used to reset the state.
   const closeGameOverModal = () => {
     setEnd((prevValue) => !prevValue);
+    setOpen(true);
     setStackedWords([]);
-    setStart(false);
     setScore(0);
     setLevel(1);
     setMultiplier(1);
   };
 
+  //this function is used to end the game
   const endGame = () => {
     setEnd((prevValue) => !prevValue);
+    //this is a helper function that sends game data to update the
+    //user's average score, max level etc
     updateUserData(score, level);
   };
 
+  //this function is used to increase the score of one word
+  // when the level increases
   const increaseWordScorePerLevel = () => {
     setWordPointPerLevel(10 * level);
   };
 
+  //this function increase the score
   const increaseScore = () => {
     setScore((prevValue) => prevValue + wordPointPerLevel);
     setMultiplier((prevValue) => prevValue + 1);
     // handleWordApperingRate();
   };
 
+  //this function increases level
   const increaseLevel = () => {
     if (score >= 30 * level) {
       setLevel((prevValue) => prevValue + 1);
     }
   };
 
+  //this function is to route to leaderboard
   const proceedToLeaderBoard = () => {
     window.location = "/leaderboard";
   };
 
-  // const handleWordApperingRate = () => {
-  //   setTime(level * multiplier);
-  // };
-
+  //this function is to remove the correct word user types
   const removeStackedWords = (...args) => {
     const id = args;
     setStackedWords((prevState) => {
@@ -89,40 +105,53 @@ const GamePage = () => {
     });
   };
 
+  //this function handles the keypress event
+  //to capture what user types
   const onKeyPress = (e) => {
     const key = e.key.toUpperCase();
     if (key.match(/[A-Z]/i)) {
       const newInput = currentInput + key;
       if (activeWord.indexOf(newInput) === 0) {
+        //when word is matching with the typed keys
+
         if (activeWord === newInput) {
+          //when word is correct
+          successSound();
           removeStackedWords(activeId);
           increaseScore();
           increaseLevel();
         }
         setCurrentInput(newInput);
       } else {
+        // failureSound();
         setCurrentInput("");
         setMultiplier(1);
       }
     }
   };
 
+  //function used to start game
   const startGame = () => {
+    //below setinterval handles the words appearing on interval
+    //and related logic , state changes
     interval.current.id = setInterval(() => {
+      document.getElementById("game-div").focus();
       increaseWordScorePerLevel();
       let rng = Math.floor(Math.random() * words.length);
       let idObj = { id: Date.now() };
       let wordObj = Object.assign(words[rng], idObj);
+      wordObj["word"] = wordObj.word.toUpperCase();
       setStackedWords((prevState) => [...prevState, wordObj]);
       setActiveWord(wordObj.word);
       setActiveId(wordObj.id);
       setCurrentInput("");
     }, time);
-    setStart(true);
+    setOpen(false);
   };
 
   return (
     <div
+      id="game-div"
       onKeyDown={(e) => {
         onKeyPress(e);
       }}
@@ -130,16 +159,6 @@ const GamePage = () => {
     >
       <div className="playground-container">
         <div className="controlls">
-          <Button
-            id="start-btn"
-            variant="contained"
-            color="primary"
-            style={{ margin: "auto" }}
-            onClick={startGame}
-          >
-            Start
-          </Button>
-
           <div className="level-box">
             <p className="level-text">{level}</p>
             <p className="level-text">Level</p>
@@ -151,17 +170,6 @@ const GamePage = () => {
           <div className="multiplier-box">
             <p className="level-text">{multiplier}X</p>
           </div>
-          <Button
-            variant="contained"
-            color="primary"
-            style={{ margin: "auto" }}
-            onClick={proceedToLeaderBoard}
-          >
-            Leaderboard
-          </Button>
-          <Button className="instruction-btn" onClick={handleClose}>
-            <HelpIcon style={{ margin: "0", transform: "scale(1.2, 1.2)" }} />
-          </Button>
         </div>
         <div className="wordstack">
           <StackComponent stackedWords={stackedWords} endGame={endGame} />
@@ -173,7 +181,6 @@ const GamePage = () => {
       <Modal
         className="modal"
         open={open}
-        onClose={handleClose}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
@@ -183,14 +190,16 @@ const GamePage = () => {
       >
         <Fade in={open}>
           <div className="paper">
-            <InstructionComponent handleClose={handleClose} />
+            <InstructionComponent
+              startGame={startGame}
+              proceedToLeaderBoard={proceedToLeaderBoard}
+            />
           </div>
         </Fade>
       </Modal>
       <Modal
         className="modal"
         open={end}
-        onClose={handleClose}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{

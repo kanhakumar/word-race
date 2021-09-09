@@ -34,16 +34,16 @@ const useStyles = makeStyles({
   },
 });
 
+//this component displays the leaderboard table
 export default function LeaderBoardPage() {
   const classes = useStyles();
 
   const [leaderBoardData, setLeaderBoardData] = useState([]);
 
+  //function used to fill data of leaderboard table
   const populateLeaderBoard = async () => {
+    //helper function which calls api to get leaderboard data
     let leaderboard = await fetchLeaderBoardData();
-    if (leaderboard.length > 10) {
-      leaderboard.splice(10);
-    }
     setLeaderBoardData(leaderboard);
   };
 
@@ -51,53 +51,51 @@ export default function LeaderBoardPage() {
     populateLeaderBoard();
   }, []);
 
+  //used to go to game page
   const backToGamePage = () => {
     window.location = "/game";
   };
 
   return (
     <>
-      <TableContainer component={Paper}>
-        <Table className={classes.table} aria-label="customized table">
-          <TableHead>
-            <TableRow>
-              <StyledTableCell>Rank</StyledTableCell>
-              <StyledTableCell align="center">Score</StyledTableCell>
-              <StyledTableCell align="center">
-                No. of games Played
-              </StyledTableCell>
-              <StyledTableCell align="center">Average Score</StyledTableCell>
-              <StyledTableCell align="center">Maximum Level</StyledTableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {leaderBoardData.map((row, index) => (
-              <StyledTableRow key={row._id}>
-                <StyledTableCell component="th" scope="row">
-                  {index + 1}
-                </StyledTableCell>
-                <StyledTableCell align="center">{row.score}</StyledTableCell>
+      <div className="leaderboard-container">
+        <TableContainer component={Paper}>
+          <Table className={classes.table} aria-label="customized table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell>Rank</StyledTableCell>
+                <StyledTableCell align="center">Score</StyledTableCell>
                 <StyledTableCell align="center">
-                  {row.leaderboard[0].gamesPlayed}
+                  No. of games Played
                 </StyledTableCell>
-                <StyledTableCell align="center">
-                  {row.leaderboard[0].averageScore.toFixed(2)}
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {row.leaderboard[0].maxLevel}
-                </StyledTableCell>
-              </StyledTableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+                <StyledTableCell align="center">Average Score</StyledTableCell>
+                <StyledTableCell align="center">Maximum Level</StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {leaderBoardData.map((row, index) => (
+                <StyledTableRow key={row._id}>
+                  <StyledTableCell component="th" scope="row">
+                    {index + 1}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">{row.score}</StyledTableCell>
+                  <StyledTableCell align="center">
+                    {row.leaderboard[0].gamesPlayed}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    {row.leaderboard[0].averageScore.toFixed(2)}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    {row.leaderboard[0].maxLevel}
+                  </StyledTableCell>
+                </StyledTableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
       <div className="back-button">
-        <Button
-          variant="contained"
-          color="primary"
-          style={{ marginTop: "1.2em", marginBottom: "1.2em" }}
-          onClick={backToGamePage}
-        >
+        <Button variant="contained" color="primary" onClick={backToGamePage}>
           Get back to game
         </Button>
       </div>

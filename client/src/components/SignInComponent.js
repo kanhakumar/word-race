@@ -26,19 +26,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+//component that is used for signin or sign up
 function SignInComponent() {
   const classes = useStyles();
   const [isUser, setIsUser] = useState(false);
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
 
+  //is used for setting state that enables posting data to create a new user
   const postUser = () => {
     setIsUser(true);
     document.getElementById("btn").innerHTML = "Go!";
   };
 
+  //handles the submit action
   const handleSubmit = async () => {
     if (!isUser) {
+      //is fetching the user data if already signed up
       const response = await signIn(email);
       if (response.data.success) {
         window.location = "/game";
@@ -46,6 +50,7 @@ function SignInComponent() {
         postUser();
       }
     } else {
+      //sending data to server to create new user
       const res = await signUp(email, name);
       if (res.data.success) {
         window.location = "/game";

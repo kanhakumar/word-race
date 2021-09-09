@@ -1,22 +1,23 @@
 import { useEffect } from "react";
+import { endRow, midRow, topRow } from "../utils";
 
-const topRow = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"];
-const midRow = ["A", "S", "D", "F", "G", "H", "J", "K", "L"];
-const endRow = ["Z", "X", "C", "V", "B", "N", "M"];
-
+//component that displays onscreen keyboard
 const KeyBoardComponent = () => {
+  //this function handles when the key is pressed or down
   const handleKeyDown = (e) => {
     let obj = document.getElementById(e.key.toUpperCase());
     if (obj) {
-      obj.style.backgroundColor = "#63a0ef";
-      obj.style.color = "white";
+      obj.style.backgroundColor = "#edc345";
+      // obj.style.color = "white";
     }
   };
+
+  //this function handles when the key is released
   const handleKeyUp = (e) => {
     let obj = document.getElementById(e.key.toUpperCase());
     if (obj) {
       obj.style.backgroundColor = "#ddd";
-      obj.style.color = "black";
+      // obj.style.color = "black";
     }
   };
   useEffect(() => {

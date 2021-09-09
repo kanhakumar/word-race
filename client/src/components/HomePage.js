@@ -1,6 +1,7 @@
 import SignInComponent from "./SignInComponent";
 
-const Home = () => {
+//this is the landing page component
+const HomePage = () => {
   return (
     <>
       <div className="header-container">
@@ -39,4 +40,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomePage;

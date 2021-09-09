@@ -45,11 +45,19 @@ const useStyles = (theme) => ({
   },
 });
 
+//this is the modal which renders instructions and start,leaderboard buttons
 class InstructionComponent extends Component {
   constructor(props) {
     super(props);
-    this.handleClose = props.handleClose;
+    this.startGame = props.startGame;
+    this.proceedToLeaderBoard = props.proceedToLeaderBoard;
+    this.backToHomePage = this.backToHomePage.bind(this);
   }
+
+  //function to go home
+  backToHomePage = () => {
+    window.location = "/";
+  };
 
   render() {
     const { classes } = this.props;
@@ -57,30 +65,37 @@ class InstructionComponent extends Component {
     return (
       <>
         <div className={classes.header}>How to play!</div>
-        <Button className={classes.closebutton} onClick={this.handleClose}>
+        <Button className={classes.closebutton} onClick={this.backToHomePage}>
           X
         </Button>
         <div className={classes.content}>
-          <p>
-            Word Race is a game designed to improve QWERTY typing rate and
-            efficiency. Words appear one by one at a rate that goes up as time
-            progresses. There’s a limited “stack space” that fills up after a
-            certain amount of words have appeared. Once a player types a word
-            correctly, that word is removed from the stack.{" "}
-          </p>
-          <p>
-            The score is calculated based on how fast the player was able to
-            clear that word, and a multiplier. The multiplier increases with
-            every word the player types correctly and resets on any mistype.
-            Optionally a leveling system can also be added that varies the word
-            appearing rate, the stack space and leveling up bonus score, else
-            the rate can go up constantly, flattening out at say one word per
-            two seconds.
-          </p>
-          <p>
-            If the stack is full, it’s game over. The player can then submit
-            their score and compare with a leaderboard.
-          </p>
+          <ul>
+            <li>Click on the start button to proceed.</li>
+            <li>Words are appearing per two(2) seconds.</li>
+            <li>You get 10 points for every correct word you type.</li>
+            <li>If you are unable to type 7 words correctly, game is over.</li>
+          </ul>
+          <div className="instruction-footer">
+            <div className="start-btn-div">
+              <Button
+                id="start-btn"
+                variant="contained"
+                color="primary"
+                onClick={this.startGame}
+              >
+                Start
+              </Button>
+            </div>
+            <div className="leaderboard-btn-div">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={this.proceedToLeaderBoard}
+              >
+                Leaderboard
+              </Button>
+            </div>
+          </div>
         </div>
       </>
     );

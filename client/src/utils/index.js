@@ -2,8 +2,15 @@ import axios from "axios";
 const EMAIL = "email";
 const USER_ID = "user_id";
 
+//consts stored to display keyboard
+export const topRow = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"];
+export const midRow = ["A", "S", "D", "F", "G", "H", "J", "K", "L"];
+export const endRow = ["Z", "X", "C", "V", "B", "N", "M"];
+
+//api base url
 const Api = "http://localhost:4000/api/";
 
+//api call that checks and fetches user
 export const signIn = async (email) => {
   const response = await axios.post(Api + "user/getUser", {
     email,
@@ -15,6 +22,7 @@ export const signIn = async (email) => {
   return response;
 };
 
+//api call to add a user
 export const signUp = async (email, name) => {
   const response = await axios.post(Api + "/user/addUser", {
     email,
@@ -27,6 +35,7 @@ export const signUp = async (email, name) => {
   return response;
 };
 
+//api call to save a particular game
 export const saveGame = async (score, level, multiplier) => {
   let user_id = window.localStorage.getItem(USER_ID);
   const response = await axios.post(Api + "game/saveGame", {
@@ -38,6 +47,7 @@ export const saveGame = async (score, level, multiplier) => {
   return response;
 };
 
+//api call to update user data and statestics
 export const updateUserData = async (score, level) => {
   let email = window.localStorage.getItem(EMAIL);
   const response = await axios.put(Api + "user/updateUserData", {
@@ -48,10 +58,22 @@ export const updateUserData = async (score, level) => {
   return response;
 };
 
+//api call to fetch leaderboard data
 export const fetchLeaderBoardData = async () => {
   const response = await axios.get(Api + "game/leaderboard");
   if (response.data.success) {
-    let leaderboard = response.data.leaderboard;
-    return leaderboard.reverse();
+    return response.data.leaderboard;
   }
+};
+
+//success sound effect when user types correct
+export const successSound = () => {
+  var snd = new Audio("https://www.fesliyanstudios.com/play-mp3/2899");
+  snd.play();
+};
+
+//wrong sound effect when user types incorrect
+export const failureSound = () => {
+  var snd = new Audio("https://www.fesliyanstudios.com/play-mp3/580");
+  snd.play();
 };
